@@ -1,0 +1,18 @@
+#!/bin/sh
+
+name_of_search_proccess=$1
+
+if [ -z "$1" ]
+  then
+    echo "No argument supplied. Please enter a search_proccess: "
+    read name_of_search_proccess
+fi
+while [ -z "$name_of_search_proccess" ]; do echo "No argument supplied. Please enter a search_proccess: "; read name_of_search_proccess; done
+
+for i in $(ps -C "${name_of_search_proccess}" -o pid | grep -v PID)
+do
+file_name="access_$i.txt"
+touch /tmp/investigation/$file_name
+sudo ls -l /proc/${i}/fd | awk -F\  '{print $11}' > /tmp/investigation/$file_name
+echo "PID # ${i} open files count : $(sudo ls -l /proc/${i}/fd | wc -l)"
+done

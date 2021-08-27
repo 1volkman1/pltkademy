@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# replace_string  nginx-01.com nginx-02.com
+
+old_servername=$1
+new_servername=$2
+path_to_folder=$3
+
+if [ -z "$1" ]
+  then
+    echo "No argument supplied. Please enter a old server name: "
+    read old_servername
+fi
+while [ -z "$old_servername" ]; do echo "No argument supplied. Please enter a old server name: "; read old_servername; done
+
+if [ -z "$2" ]
+  then
+    echo "No argument supplied. Please enter a new server name: "
+    read new_servername
+fi
+while [ -z "$new_servername" ]; do echo "No argument supplied. Please enter a new server name: "; read new_servername; done
+
+if [ -z "$3" ]
+  then
+    echo "No argument supplied. Please enter a path to directory where need change server name:: "
+    read path_to_folder
+fi
+while [ -z "$path_to_folder" ]; do echo "No argument supplied. Please enter a path to directory where need change server name: "; read path_to_folder; done
+
+echo " You input that old name server: $old_servername "
+echo " You input that new name server: $new_servername "
+echo " You input that path to directory where need change configuration files: $path_to_folder "
+
+find $path_to_folder -type f -exec sed -i -e "s/$old_servername/$new_servername/g" {} \;  # rename within files

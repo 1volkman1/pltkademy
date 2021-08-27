@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#Create counter
+NUM=1
+#Create loop
+while [ $NUM -le 10 ]; do
+#Form file name using this template (test_$TIMESTAMP_$NUM.txt)
+file_name="test_`date +%Y`_`date +%m`_`date +%d`_`date +%H`_`date +%M`_`date +%S`_$NUM.txt"
+#Create file
+touch $file_name
+#Generate 1000 random characters and save them to file
+cat /dev/urandom | tr -dc 'a-zA-Z0-9-!@#$%^&*()_+~' | fold -w 999 | head -n 1 > $file_name
+#Increase counter +1
+NUM=$(($NUM+1))
+sleep 1
+done
+
+
+#How shedule ?
+# I'm use a cron:
+# crontab -e
+# add string like
+# 0 */6   *   *   *    /path/to/file/generatefile
